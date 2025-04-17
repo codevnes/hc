@@ -79,7 +79,7 @@ export default function EditPostPage({ params }: { params: { id: string } }) {
       if (!token) return;
       
       try {
-        const response = await axios.get('http://localhost:5000/api/categories', {
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/categories`, {
           headers: { 'x-auth-token': token }
         });
         
@@ -95,7 +95,7 @@ export default function EditPostPage({ params }: { params: { id: string } }) {
       
       try {
         setLoading(true);
-        const response = await axios.get(`http://localhost:5000/api/posts/${params.id}`, {
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/posts/${params.id}`, {
           headers: { 'x-auth-token': token }
         });
         
@@ -217,7 +217,7 @@ export default function EditPostPage({ params }: { params: { id: string } }) {
       }
       
       await axios.put(
-        `http://localhost:5000/api/posts/${params.id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/posts/${params.id}`,
         formData,
         {
           headers: {

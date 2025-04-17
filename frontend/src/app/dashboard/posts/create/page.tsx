@@ -67,7 +67,9 @@ export default function CreatePostPage() {
 
       try {
         setLoading(true);
-        const response = await axios.get('http://localhost:5000/api/categories', {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
+        const response = await axios.get(`${apiUrl}/categories`, {
           headers: { 'x-auth-token': token }
         });
 
@@ -148,7 +150,7 @@ export default function CreatePostPage() {
       }
 
       await axios.post(
-        'http://localhost:5000/api/posts',
+        `${process.env.NEXT_PUBLIC_API_URL}/posts`,
         formData,
         {
           headers: {

@@ -64,7 +64,7 @@ export default function PostsPage() {
   const fetchPosts = async () => {
     try {
       setLoading(true);
-      const apiUrl = 'http://localhost:5000/api';
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
       // Fetch all posts or only user's posts based on role
       const endpoint = isAdmin ? `${apiUrl}/posts` : `${apiUrl}/posts/user/me`;
@@ -92,7 +92,8 @@ export default function PostsPage() {
     if (!postToDelete) return;
 
     try {
-      const apiUrl = 'http://localhost:5000/api';
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
       await axios.delete(`${apiUrl}/posts/${postToDelete.id}`, {
         headers: { 'x-auth-token': token }
       });

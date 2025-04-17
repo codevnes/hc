@@ -26,7 +26,7 @@ const nextConfig = {
   },
   // Pass environment variables to the client
   env: {
-    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api',
+    API_URL: process.env.API_URL || 'http://localhost:5000/api',
   },
   eslint: {
     // Warning: This allows production builds to successfully complete even if

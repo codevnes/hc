@@ -78,7 +78,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const loadUser = async (authToken: string) => {
     try {
       console.log('AuthContext: Loading user with token:', authToken ? 'Token exists' : 'No token');
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+      const apiUrl = process.env.API_URL;
       console.log('API URL:', `${apiUrl}/auth/me`);
 
       const res = await axios.get(`${apiUrl}/auth/me`, {
@@ -103,7 +103,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const login = async (email: string, password: string) => {
     try {
       console.log('AuthContext: Attempting login with:', email);
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+      const apiUrl = process.env.API_URL;
       console.log('API URL:', `${apiUrl}/auth/login`);
 
       const res = await axios.post(`${apiUrl}/auth/login`, {
@@ -134,7 +134,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const register = async (username: string, email: string, password: string) => {
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+      const apiUrl = process.env.API_URL;
       const res = await axios.post(`${apiUrl}/auth/register`, {
         username,
         email,

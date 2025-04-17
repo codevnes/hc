@@ -1,7 +1,7 @@
 // Configuration file for environment variables and app settings
 
 // API URL - use environment variable or fallback to localhost
-export const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+export const API_URL = process.env.API_URL || 'http://localhost:5000/api';
 
 // Other configuration settings can be added here
 export const APP_NAME = 'HC Stock';

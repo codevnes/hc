@@ -40,7 +40,7 @@ export function MediaBrowser({ open, onClose, onSelect }: MediaBrowserProps) {
       setIsLoading(true);
       setError(null);
       
-      let url = `${process.env.NEXT_PUBLIC_API_URL}/media/editor/images?limit=${itemsPerPage}&offset=${(page - 1) * itemsPerPage}`;
+      let url = `${process.env.API_URL}/media/editor/images?limit=${itemsPerPage}&offset=${(page - 1) * itemsPerPage}`;
       if (search) {
         url += `&search=${encodeURIComponent(search)}`;
       }

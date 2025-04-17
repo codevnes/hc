@@ -102,7 +102,7 @@ const StockRangeChart: React.FC<StockRangeChartProps> = ({
         const formattedStartDate = startDate.toISOString().split('T')[0];
 
         // Fetch data from the API
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/stocks/range?startDate=${formattedStartDate}&endDate=${endDate}&symbol=${symbol.toUpperCase()}`);
+        const response = await axios.get(`${process.env.API_URL}/stocks/range?startDate=${formattedStartDate}&endDate=${endDate}&symbol=${symbol.toUpperCase()}`);
 
         if (response.data && response.data.length > 0) {
           // Add dummy OHLC data for testing if needed
@@ -127,7 +127,7 @@ const StockRangeChart: React.FC<StockRangeChartProps> = ({
         } else {
           // Fallback to fetching from symbol endpoint
           try {
-            const symbolResponse = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/stocks/symbol/${symbol.toUpperCase()}`);
+            const symbolResponse = await axios.get(`${process.env.API_URL}/stocks/symbol/${symbol.toUpperCase()}`);
             if (symbolResponse.data && symbolResponse.data.length > 0) {
               setData(symbolResponse.data);
             } else {
@@ -142,7 +142,7 @@ const StockRangeChart: React.FC<StockRangeChartProps> = ({
         console.error('Error fetching data:', err);
         // Try fallback to symbol endpoint
         try {
-          const symbolResponse = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/stocks/symbol/${symbol.toUpperCase()}`);
+          const symbolResponse = await axios.get(`${process.env.API_URL}/stocks/symbol/${symbol.toUpperCase()}`);
           if (symbolResponse.data && symbolResponse.data.length > 0) {
             setData(symbolResponse.data);
           } else {

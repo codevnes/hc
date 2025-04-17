@@ -53,7 +53,7 @@ export default function CategoriesPage() {
     const fetchCategories = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/categories`, {
+        const response = await axios.get(`${process.env.API_URL}/categories`, {
           headers: { 'x-auth-token': token }
         });
         setCategories(response.data);
@@ -75,7 +75,7 @@ export default function CategoriesPage() {
     }
 
     try {
-      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/categories/${id}`, {
+      await axios.delete(`${process.env.API_URL}/categories/${id}`, {
         headers: { 'x-auth-token': token }
       });
 
@@ -139,12 +139,12 @@ export default function CategoriesPage() {
     }
 
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+      const apiUrl = process.env.API_URL;
       
       if (isEditMode && currentCategory) {
         // Update existing category
         const response = await axios.put(
-          `${process.env.NEXT_PUBLIC_API_URL}/categories/${currentCategory.id}`,
+          `${process.env.API_URL}/categories/${currentCategory.id}`,
           formData,
           { headers: { 'x-auth-token': token } }
         );

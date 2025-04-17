@@ -5,7 +5,7 @@ export const uploadEditorImage = async (token: string, file: Blob): Promise<stri
   const formData = new FormData();
   formData.append('file', file);
   
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/media/editor`, {
+  const response = await fetch(`${process.env.API_URL}/media/editor`, {
     method: 'POST',
     headers: {
       'x-auth-token': token

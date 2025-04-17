@@ -58,7 +58,7 @@ export default function MediaLibrary({ open, onClose, onSelect }: MediaLibraryPr
     
     try {
       setLoading(true);
-      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/media`, {
+      const response = await axios.get(`${process.env.API_URL}/media`, {
         headers: { 'x-auth-token': token }
       });
       setMedia(response.data);
@@ -76,7 +76,7 @@ export default function MediaLibrary({ open, onClose, onSelect }: MediaLibraryPr
     
     try {
       setLoading(true);
-      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/media/search?q=${encodeURIComponent(searchQuery)}`, {
+      const response = await axios.get(`${process.env.API_URL}/media/search?q=${encodeURIComponent(searchQuery)}`, {
         headers: { 'x-auth-token': token }
       });
       setMedia(response.data);
@@ -114,7 +114,7 @@ export default function MediaLibrary({ open, onClose, onSelect }: MediaLibraryPr
       formData.append('alt_text', metadata.alt_text);
       formData.append('caption', metadata.caption);
       
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/media`, formData, {
+      const response = await axios.post(`${process.env.API_URL}/media`, formData, {
         headers: {
           'x-auth-token': token,
           'Content-Type': 'multipart/form-data'

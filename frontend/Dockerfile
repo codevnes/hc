@@ -15,11 +15,11 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 # Định nghĩa ARG cho biến môi trường build-time
-ARG NEXT_PUBLIC_API_URL
+ARG API_URL
 ARG NEXT_PUBLIC_TINYMCE_API_KEY
 
 # Tạo file .env.local từ các biến môi trường
-RUN echo "NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}" > .env.local
+RUN echo "API_URL=${API_URL}" > .env.local
 RUN echo "NEXT_PUBLIC_TINYMCE_API_KEY=${NEXT_PUBLIC_TINYMCE_API_KEY}" >> .env.local
 
 # Build ứng dụng

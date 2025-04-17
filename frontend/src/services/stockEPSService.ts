@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { StockEPS } from './stockDataTypes';
-
-const API_URL = 'http://localhost:5000/api';
+import { API_URL } from '@/config';
 
 // Lấy token từ localStorage
 const getToken = () => localStorage.getItem('token');
@@ -116,7 +115,7 @@ export const deleteMultipleStockEPSByIds = async (ids: number[]) => {
       // Xử lý xóa từng ID một
       const results = [];
       const errors = [];
-      
+
       for (const id of ids) {
         try {
           const result = await deleteStockEPSById(id);
@@ -125,29 +124,29 @@ export const deleteMultipleStockEPSByIds = async (ids: number[]) => {
           errors.push({ id, error: idError.message || 'Lỗi không xác định' });
         }
       }
-      
+
       if (errors.length > 0) {
         console.error('Lỗi khi xóa một số ID:', errors);
         if (results.length > 0) {
           // Nếu có ít nhất một ID được xóa thành công
-          return { 
-            success: true, 
+          return {
+            success: true,
             message: `Đã xóa ${results.length}/${ids.length} mục, ${errors.length} mục không thành công`,
             results,
-            errors 
+            errors
           };
         }
         // Nếu không có ID nào được xóa thành công, ném lỗi
         throw new Error('Không thể xóa bất kỳ mục nào');
       }
-      
-      return { 
-        success: true, 
+
+      return {
+        success: true,
         message: 'Đã xóa tất cả các mục thành công bằng phương thức xóa từng mục',
-        results 
+        results
       };
     }
-    
+
     // Kiểm tra nếu lỗi là "Không tìm thấy dữ liệu stock_eps"
     if (error.response?.data?.message === 'Không tìm thấy dữ liệu stock_eps') {
       console.warn('Một số ID không tồn tại, vẫn tiếp tục xóa các ID khác');
@@ -185,53 +184,53 @@ export const validateCSVBeforeImport = async (file: File): Promise<{isValid: boo
   return new Promise((resolve) => {
     const reader = new FileReader();
     const errors: string[] = [];
-    
+
     reader.onload = (event) => {
       if (!event.target?.result) {
         resolve({isValid: false, errors: ['Không thể đọc file']});
         return;
       }
-      
+
       const csv = event.target.result as string;
       const lines = csv.split('\n');
-      
+
       if (lines.length <= 1) {
         resolve({isValid: false, errors: ['File CSV trống hoặc chỉ có header']});
         return;
       }
-      
+
       // Kiểm tra header
       const header = lines[0].trim().split(',');
       const requiredColumns = ['symbol', 'date', 'eps', 'eps_nganh'];
-      
+
       for (const col of requiredColumns) {
         if (!header.includes(col)) {
           errors.push(`Thiếu cột ${col} trong file CSV`);
         }
       }
-      
+
       // Kiểm tra từng dòng dữ liệu
       for (let i = 1; i < lines.length; i++) {
         const line = lines[i].trim();
         if (!line) continue; // Bỏ qua dòng trống
-        
+
         const parts = line.split(',');
         if (parts.length !== header.length) {
           errors.push(`Dòng ${i+1} có số cột không khớp với header`);
           continue;
         }
-        
+
         // Tạo đối tượng dữ liệu từ dòng CSV
         const rowData: Record<string, string> = {};
         header.forEach((col, index) => {
           rowData[col] = parts[index];
         });
-        
+
         // Kiểm tra định dạng ngày và chuẩn hóa
         if (rowData.date) {
           // Lấy giá trị ngày từ chuỗi date trong CSV
           let dateValue = rowData.date.trim();
-          
+
           // Kiểm tra các định dạng phổ biến và chuyển đổi sang YYYY-MM-DD
           // Case 1: DD/MM/YYYY
           if (/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(dateValue)) {
@@ -253,7 +252,7 @@ export const validateCSVBeforeImport = async (file: File): Promise<{isValid: boo
             const dateParts = dateValue.split('-');
             dateValue = `${dateParts[2]}-${dateParts[1].padStart(2, '0')}-${dateParts[0].padStart(2, '0')}`;
           }
-          
+
           // Kiểm tra định dạng cuối cùng có đúng là YYYY-MM-DD không
           const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
           if (!dateRegex.test(dateValue)) {
@@ -271,32 +270,32 @@ export const validateCSVBeforeImport = async (file: File): Promise<{isValid: boo
         } else {
           errors.push(`Dòng ${i+1} thiếu thông tin ngày`);
         }
-        
+
         // Kiểm tra symbol
         if (!rowData.symbol) {
           errors.push(`Dòng ${i+1} thiếu mã cổ phiếu`);
         }
-        
+
         // Kiểm tra eps và eps_nganh là số
         if (rowData.eps && isNaN(Number(rowData.eps))) {
           errors.push(`Dòng ${i+1} có giá trị EPS không phải là số: ${rowData.eps}`);
         }
-        
+
         if (rowData.eps_nganh && isNaN(Number(rowData.eps_nganh))) {
           errors.push(`Dòng ${i+1} có giá trị EPS ngành không phải là số: ${rowData.eps_nganh}`);
         }
       }
-      
+
       resolve({
         isValid: errors.length === 0,
         errors
       });
     };
-    
+
     reader.onerror = () => {
       resolve({isValid: false, errors: ['Lỗi khi đọc file']});
     };
-    
+
     reader.readAsText(file);
   });
 };

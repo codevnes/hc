@@ -16,9 +16,11 @@ COPY . .
 
 # Định nghĩa ARG cho biến môi trường build-time
 ARG NEXT_PUBLIC_API_URL
+ARG NEXT_PUBLIC_TINYMCE_API_KEY
 
 # Tạo file .env.local từ các biến môi trường
 RUN echo "NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}" > .env.local
+RUN echo "NEXT_PUBLIC_TINYMCE_API_KEY=${NEXT_PUBLIC_TINYMCE_API_KEY}" >> .env.local
 
 # Build ứng dụng
 RUN npm run build
@@ -41,4 +43,4 @@ EXPOSE 3000
 ENV PORT 3000
 ENV HOSTNAME "0.0.0.0"
 
-CMD ["node", "server.js"] 
+CMD ["node", "server.js"]

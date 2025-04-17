@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { StockAssets } from './stockDataTypes';
-
-const API_URL = 'http://localhost:5000/api';
+import { API_URL } from '@/config';
 
 // Lấy token từ localStorage
 const getToken = () => localStorage.getItem('token');

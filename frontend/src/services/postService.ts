@@ -1,6 +1,5 @@
 import axios from 'axios';
-
-const API_URL = 'http://localhost:5000/api';
+import { API_URL } from '@/config';
 
 export interface Post {
   id: number;
@@ -116,7 +115,7 @@ export async function getPostByCategoryAndSlug(categorySlug: string, postSlug: s
     // const response = await fetch(`/api/posts/${categorySlug}/${postSlug}`);
     // if (!response.ok) return null;
     // return await response.json();
-    
+
     // Dữ liệu mẫu
     return {
       id: 1,
@@ -164,7 +163,7 @@ export async function getRelatedPosts(postId: number, categoryId: number): Promi
     // const response = await fetch(`/api/posts/related?postId=${postId}&categoryId=${categoryId}`);
     // if (!response.ok) return [];
     // return await response.json();
-    
+
     // Dữ liệu mẫu
     return [
       {
@@ -223,4 +222,4 @@ export async function getRelatedPosts(postId: number, categoryId: number): Promi
     console.error('Error fetching related posts:', error);
     return [];
   }
-} 
+}

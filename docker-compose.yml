@@ -7,6 +7,7 @@ services:
       dockerfile: Dockerfile
       args:
         - NEXT_PUBLIC_API_URL=${API_URL:-http://localhost:5000/api}
+        - NEXT_PUBLIC_TINYMCE_API_KEY=${NEXT_PUBLIC_TINYMCE_API_KEY:-ae5fb9f4606ef984e49ec4ef9917fa7ead33eb2f06d2daaa0acd71500c5f1e68}
     restart: always
     ports:
       - "3000:3000"
@@ -61,4 +62,4 @@ networks:
     driver: bridge
 
 volumes:
-  mysql-data: 
+  mysql-data:

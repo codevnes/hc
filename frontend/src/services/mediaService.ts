@@ -1,6 +1,5 @@
 import { MediaItem } from '@/types/media';
-
-const API_URL = 'http://localhost:5000/api';
+import { API_URL } from '@/config';
 
 /**
  * Fetch all media items with pagination
@@ -12,11 +11,11 @@ export const fetchMedia = async (token: string, page: number = 1, limit: number 
       'x-auth-token': token
     }
   });
-  
+
   if (!response.ok) {
     throw new Error('Failed to fetch media');
   }
-  
+
   return response.json();
 };
 
@@ -29,11 +28,11 @@ export const searchMedia = async (token: string, query: string) => {
       'x-auth-token': token
     }
   });
-  
+
   if (!response.ok) {
     throw new Error('Failed to search media');
   }
-  
+
   return response.json();
 };
 
@@ -46,7 +45,7 @@ export const uploadMedia = async (token: string, file: File, metadata: { title: 
   formData.append('title', metadata.title);
   formData.append('alt_text', metadata.alt_text);
   formData.append('caption', metadata.caption);
-  
+
   const response = await fetch(`${API_URL}/media`, {
     method: 'POST',
     headers: {
@@ -54,11 +53,11 @@ export const uploadMedia = async (token: string, file: File, metadata: { title: 
     },
     body: formData
   });
-  
+
   if (!response.ok) {
     throw new Error('Failed to upload media');
   }
-  
+
   return response.json();
 };
 
@@ -74,11 +73,11 @@ export const updateMedia = async (token: string, id: number, metadata: { title: 
     },
     body: JSON.stringify(metadata)
   });
-  
+
   if (!response.ok) {
     throw new Error('Failed to update media');
   }
-  
+
   return response.json();
 };
 
@@ -92,10 +91,10 @@ export const deleteMedia = async (token: string, id: number) => {
       'x-auth-token': token
     }
   });
-  
+
   if (!response.ok) {
     throw new Error('Failed to delete media');
   }
-  
+
   return response.json();
 };

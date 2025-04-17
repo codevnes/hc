@@ -6,13 +6,13 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
       args:
-        - NEXT_PUBLIC_API_URL=${API_URL:-http://localhost:5000/api}
+        - API_URL=${API_URL:-http://localhost:5000/api}
         - NEXT_PUBLIC_TINYMCE_API_KEY=${NEXT_PUBLIC_TINYMCE_API_KEY:-ae5fb9f4606ef984e49ec4ef9917fa7ead33eb2f06d2daaa0acd71500c5f1e68}
     restart: always
     ports:
       - "3000:3000"
     environment:
-      - NEXT_PUBLIC_API_URL=${API_URL:-http://localhost:5000/api}
+      - API_URL=${API_URL:-http://localhost:5000/api}
       - NEXT_PUBLIC_TINYMCE_API_KEY=gqcpkc0yu6t37vrh6jaiwx7ugf0nn5o2rc106o1ugk1gwz2v
     depends_on:
       - backend
@@ -33,7 +33,7 @@ services:
       - DB_PASSWORD=hcstock123
       - DB_NAME=hc_stock
       - JWT_SECRET=hc_stock_secret_key_very_secure
-      - CORS_ORIGIN=${CORS_ORIGINS:-http://localhost:3000,http://127.0.0.1:3000,http://frontend:3000}
+      - CORS_ORIGIN=${CORS_ORIGINS:-http://localhost:3000,http://127.0.0.1:3000,http://frontend:3000,http://157.10.198.58:3000}
     depends_on:
       - db
     volumes:

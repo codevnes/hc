@@ -8,9 +8,25 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: process.env.CORS_ORIGIN || ['http://localhost:3000', 'http://frontend:3000', 'http://127.0.0.1:3000'],
+  origin: function(origin, callback) {
+    // Get allowed origins from environment variable
+    const allowedOrigins = process.env.CORS_ORIGIN ?
+      process.env.CORS_ORIGIN.split(',') :
+      ['http://localhost:3000', 'http://frontend:3000', 'http://127.0.0.1:3000', 'http://157.10.198.58:3000'];
+
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, origin);
+    } else {
+      console.log('CORS blocked for origin:', origin);
+      callback(null, allowedOrigins[0]); // Default to first allowed origin if not matched
+    }
+  },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'x-auth-token']
+  allowedHeaders: ['Content-Type', 'Authorization', 'x-auth-token'],
+  credentials: true
 }));
 app.use(express.json());
 

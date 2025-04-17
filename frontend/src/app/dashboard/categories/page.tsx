@@ -2,15 +2,12 @@
 
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import { FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
 import {
   Card,
   CardContent,
-  CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
 import {
   Dialog,
@@ -18,7 +15,6 @@ import {
   DialogHeader,
   DialogTitle,
   DialogFooter,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -54,25 +50,25 @@ export default function CategoriesPage() {
       return;
     }
 
+    const fetchCategories = async () => {
+      try {
+        setLoading(true);
+        const apiUrl = 'http://localhost:5000/api';
+        const response = await axios.get(`${apiUrl}/categories`, {
+          headers: { 'x-auth-token': token }
+        });
+        setCategories(response.data);
+        setError(null);
+      } catch (err) {
+        console.error('Lỗi khi tải danh mục:', err);
+        setError('Không thể tải danh sách danh mục. Vui lòng thử lại sau.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchCategories();
   }, [token, isAdmin, router]);
-
-  const fetchCategories = async () => {
-    try {
-      setLoading(true);
-      const apiUrl = 'http://localhost:5000/api';
-      const response = await axios.get(`${apiUrl}/categories`, {
-        headers: { 'x-auth-token': token }
-      });
-      setCategories(response.data);
-      setError(null);
-    } catch (err) {
-      console.error('Lỗi khi tải danh mục:', err);
-      setError('Không thể tải danh sách danh mục. Vui lòng thử lại sau.');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleDelete = async (id: number) => {
     if (!window.confirm('Bạn có chắc chắn muốn xóa danh mục này?')) {

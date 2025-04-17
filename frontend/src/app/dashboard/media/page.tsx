@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { toast } from 'react-hot-toast';
 import { MediaItem } from '@/types/media';
 import { fetchMedia, searchMedia, uploadMedia, updateMedia, deleteMedia } from '@/services/mediaService';
@@ -39,22 +40,8 @@ export default function MediaPage() {
     caption: ''
   });
 
-  // Redirect if not authenticated
-  useEffect(() => {
-    if (!authLoading && !isAuthenticated) {
-      router.push('/login');
-    }
-  }, [isAuthenticated, authLoading, router]);
-
-  // Fetch media when component mounts
-  useEffect(() => {
-    if (token) {
-      loadMedia();
-    }
-  }, [token, currentPage]);
-
   // Fetch media from API using service
-  const loadMedia = async () => {
+  const loadMedia = useCallback(async () => {
     if (!token) return;
 
     try {
@@ -76,7 +63,21 @@ export default function MediaPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token, currentPage]);
+
+  // Redirect if not authenticated
+  useEffect(() => {
+    if (!authLoading && !isAuthenticated) {
+      router.push('/login');
+    }
+  }, [isAuthenticated, authLoading, router]);
+
+  // Fetch media when component mounts
+  useEffect(() => {
+    if (token) {
+      loadMedia();
+    }
+  }, [token, loadMedia]);
 
   // Search media using service
   const handleSearch = async () => {
@@ -269,10 +270,11 @@ export default function MediaPage() {
             {media.map((item) => (
               <Card key={item.id} className="overflow-hidden">
                 <div className="aspect-square relative">
-                  <img
+                  <Image
                     src={`http://localhost:5000${item.filepath}`}
                     alt={item.alt_text || item.filename}
-                    className="w-full h-full object-cover"
+                    fill
+                    className="object-cover"
                   />
                 </div>
                 <CardHeader className="p-3">
@@ -340,10 +342,11 @@ export default function MediaPage() {
               {selectedFile ? (
                 <div className="space-y-2">
                   <div className="relative w-40 h-40 mx-auto">
-                    <img
+                    <Image
                       src={URL.createObjectURL(selectedFile)}
                       alt="Preview"
-                      className="w-full h-full object-contain"
+                      fill
+                      className="object-contain"
                     />
                     <button
                       onClick={() => setSelectedFile(null)}
@@ -444,10 +447,11 @@ export default function MediaPage() {
           {selectedMedia && (
             <div className="space-y-4 py-4">
               <div className="aspect-video relative rounded-md overflow-hidden">
-                <img
+                <Image
                   src={`http://localhost:5000${selectedMedia.filepath}`}
                   alt={selectedMedia.alt_text || selectedMedia.filename}
-                  className="w-full h-full object-contain"
+                  fill
+                  className="object-contain"
                 />
               </div>
 
@@ -520,10 +524,11 @@ export default function MediaPage() {
 
             {selectedMedia && (
               <div className="mt-4 aspect-video relative rounded-md overflow-hidden">
-                <img
+                <Image
                   src={`http://localhost:5000${selectedMedia.filepath}`}
                   alt={selectedMedia.alt_text || selectedMedia.filename}
-                  className="w-full h-full object-contain"
+                  fill
+                  className="object-contain"
                 />
               </div>
             )}

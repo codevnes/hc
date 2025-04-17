@@ -90,7 +90,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       console.log('AuthContext: User data received:', res.data ? 'Yes' : 'No');
       setUser(res.data);
       setLoading(false);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+     
     } catch (error) {
       console.error('AuthContext: Load user error:', error);
       localStorage.removeItem('token');

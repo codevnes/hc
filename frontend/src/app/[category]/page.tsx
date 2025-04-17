@@ -3,13 +3,13 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { 
   Card, 
   CardContent, 
   CardFooter, 
   CardHeader, 
-  CardTitle,
-  CardDescription
+  CardTitle
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -159,10 +159,11 @@ export default function CategoryPage() {
                 {post.thumbnail && (
                   <div className="relative pb-[55%] overflow-hidden">
                     <Link href={`/${categorySlug}/${post.slug}`}>
-                      <img 
+                      <Image 
                         src={post.thumbnail} 
                         alt={post.thumbnail_alt || post.title} 
-                        className="absolute top-0 left-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        className="object-cover group-hover:scale-105 transition-transform duration-300"
+                        fill
                       />
                     </Link>
                   </div>

@@ -3,14 +3,14 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
-import { ChevronRight, Home, Calendar, User, Eye, Share2 } from 'lucide-react';
+import { ChevronRight, Home, Calendar, Eye, Share2 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import ClassicEditor from '@/components/editor/ClassicEditor';
 import { getPostByCategoryAndSlug, getRelatedPosts, Post } from '@/services/postService';
 
 export default function PostPage() {
@@ -181,10 +181,11 @@ export default function PostPage() {
           
           {post.thumbnail && (
             <div className="relative pb-[55%] mb-6 overflow-hidden rounded-lg shadow-md">
-              <img 
+              <Image 
                 src={post.thumbnail} 
                 alt={post.thumbnail_alt || post.title} 
-                className="absolute top-0 left-0 w-full h-full object-cover"
+                className="object-cover"
+                fill
               />
             </div>
           )}
@@ -219,10 +220,11 @@ export default function PostPage() {
                 {relatedPost.thumbnail && (
                   <div className="relative pb-[55%] overflow-hidden">
                     <Link href={`/${relatedPost.category_slug}/${relatedPost.slug}`}>
-                      <img 
+                      <Image 
                         src={relatedPost.thumbnail} 
                         alt={relatedPost.thumbnail_alt || relatedPost.title} 
-                        className="absolute top-0 left-0 w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                        className="hover:scale-105 transition-transform duration-300 object-cover"
+                        fill
                       />
                     </Link>
                   </div>

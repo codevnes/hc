@@ -11,7 +11,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import {
   Select,
   SelectContent,
@@ -38,7 +37,7 @@ const formSchema = z.object({
     message: 'Vui lòng chọn danh mục'
   }),
   slug: z.string().optional(),
-  thumbnail: z.any().optional(),
+  thumbnail: z.union([z.instanceof(File), z.string(), z.null()]).optional(),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -50,7 +49,6 @@ export default function CreatePostPage() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [thumbnailAltText, setThumbnailAltText] = useState('');
 
   const form = useForm<FormValues>({
@@ -117,21 +115,6 @@ export default function CreatePostPage() {
 
   const handleImageChange = (fileOrUrl: File | string | null) => {
     form.setValue('thumbnail', fileOrUrl);
-    
-    if (fileOrUrl instanceof File) {
-      // Tạo URL xem trước cho file
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewImage(reader.result as string);
-      };
-      reader.readAsDataURL(fileOrUrl);
-    } else if (typeof fileOrUrl === 'string') {
-      // Nếu là URL từ thư viện, sử dụng trực tiếp
-      setPreviewImage(fileOrUrl);
-    } else {
-      // Nếu là null, xoá xem trước
-      setPreviewImage(null);
-    }
   };
 
   const onSubmit = async (data: FormValues) => {
@@ -177,12 +160,13 @@ export default function CreatePostPage() {
 
       toast.success('Tạo bài viết thành công');
       router.push('/dashboard/posts');
-    } catch (err: any) {
+    } catch (err) {
       console.error('Lỗi khi tạo bài viết:', err);
-      setError(
-        err.response?.data?.message ||
-        'Không thể tạo bài viết. Vui lòng thử lại sau.'
-      );
+      if (axios.isAxiosError(err) && err.response?.data?.message) {
+        setError(err.response.data.message);
+      } else {
+        setError('Không thể tạo bài viết. Vui lòng thử lại sau.');
+      }
       toast.error('Không thể tạo bài viết');
     } finally {
       setSubmitting(false);

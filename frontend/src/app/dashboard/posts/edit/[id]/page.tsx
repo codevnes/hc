@@ -11,7 +11,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import {
   Select,
   SelectContent,
@@ -48,7 +47,7 @@ const formSchema = z.object({
     message: 'Vui lòng chọn danh mục'
   }),
   slug: z.string().optional(),
-  thumbnail: z.any().optional(),
+  thumbnail: z.union([z.instanceof(File), z.string(), z.null()]).optional(),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -129,7 +128,11 @@ export default function EditPostPage({ params }: { params: { id: string } }) {
       }
     };
 
-    Promise.all([fetchCategories(), fetchPost()]);
+    Promise.all([fetchCategories(), fetchPost()]).catch(err => {
+      console.error('Lỗi khi khởi tạo trang:', err);
+      setError('Có lỗi xảy ra. Vui lòng thử lại sau.');
+      setLoading(false);
+    });
   }, [token, params.id, form]);
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -226,12 +229,13 @@ export default function EditPostPage({ params }: { params: { id: string } }) {
       
       toast.success('Cập nhật bài viết thành công');
       router.push('/dashboard/posts');
-    } catch (err: any) {
+    } catch (err) {
       console.error('Lỗi khi cập nhật bài viết:', err);
-      setError(
-        err.response?.data?.message || 
-        'Không thể cập nhật bài viết. Vui lòng thử lại sau.'
-      );
+      if (axios.isAxiosError(err) && err.response?.data?.message) {
+        setError(err.response.data.message);
+      } else {
+        setError('Không thể cập nhật bài viết. Vui lòng thử lại sau.');
+      }
       toast.error('Không thể cập nhật bài viết');
     } finally {
       setSubmitting(false);

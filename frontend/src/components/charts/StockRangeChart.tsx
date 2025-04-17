@@ -81,7 +81,7 @@ const StockRangeChart: React.FC<StockRangeChartProps> = ({
       try {
         // Calculate date range based on selected time range
         const endDate = new Date().toISOString().split('T')[0]; // Today's date in YYYY-MM-DD format
-        let startDate = new Date();
+        const startDate = new Date();
 
         switch (timeRange) {
           case '1m':

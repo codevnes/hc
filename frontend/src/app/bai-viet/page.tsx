@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { 
   Card, 
   CardContent, 
@@ -15,7 +16,7 @@ import { getAllPosts, getAllCategories, Post, Category } from '@/services/postSe
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
 import { ChevronRight, Home, Calendar, User, Search } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
 
 export default function AllPostsPage() {
@@ -196,10 +197,11 @@ export default function AllPostsPage() {
                 {post.thumbnail && (
                   <div className="relative pb-[55%] overflow-hidden">
                     <Link href={`/${post.category_slug}/${post.slug}`}>
-                      <img 
+                      <Image
                         src={post.thumbnail} 
                         alt={post.thumbnail_alt || post.title} 
-                        className="absolute top-0 left-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        className="object-cover group-hover:scale-105 transition-transform duration-300"
+                        fill
                       />
                     </Link>
                   </div>

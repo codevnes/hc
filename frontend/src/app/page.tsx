@@ -2,15 +2,14 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import StockChart from '@/components/charts/StockChart';
-import { getStocksBySymbol, getAvailableSymbols, Stock, StockInfo, getStocksByDateRange } from '@/services/stockService';
-import { FaChartLine, FaSearch, FaCalendarAlt } from 'react-icons/fa';
+import { getAvailableSymbols, Stock, StockInfo, getStocksByDateRange } from '@/services/stockService';
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-  CardDescription,
   CardFooter,
 } from "@/components/ui/card";
 
@@ -42,7 +41,6 @@ export default function Home() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [postsLoading, setPostsLoading] = useState(true);
-  const [postsError, setPostsError] = useState<string | null>(null);
   const [activeCategory, setActiveCategory] = useState<string>('');
 
   useEffect(() => {
@@ -58,7 +56,7 @@ export default function Home() {
 
         // --- Calculate Date Range --- 
         const now = new Date();
-        let startDate = new Date();
+        const startDate = new Date();
         const endDate = format(now, 'yyyy-MM-dd'); // End date is today
 
         switch (timeRange) {
@@ -106,7 +104,6 @@ export default function Home() {
     const fetchPosts = async () => {
       try {
         setPostsLoading(true);
-        setPostsError(null);
 
         // Fetch categories and posts
         const [categoriesData, postsData] = await Promise.all([
@@ -123,7 +120,6 @@ export default function Home() {
         }
       } catch (err) {
         console.error('Lỗi khi lấy bài viết và danh mục:', err);
-        setPostsError('Không thể tải bài viết và danh mục. Vui lòng thử lại sau.');
       } finally {
         setPostsLoading(false);
       }
@@ -149,7 +145,6 @@ export default function Home() {
         }
       } catch (err) {
         console.error('Lỗi khi lấy bài viết theo danh mục:', err);
-        setPostsError('Không thể tải bài viết theo danh mục này. Vui lòng thử lại sau.');
       } finally {
         setPostsLoading(false);
       }
@@ -431,10 +426,11 @@ export default function Home() {
                           {post.thumbnail && (
                             <div className="relative pb-[55%] overflow-hidden">
                               <Link href={`/${post.category_slug}/${post.slug}`}>
-                                <img
+                                <Image
                                   src={post.thumbnail}
                                   alt={post.thumbnail_alt || post.title}
-                                  className="absolute top-0 left-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                  className="object-cover group-hover:scale-105 transition-transform duration-300"
+                                  fill
                                 />
                               </Link>
                             </div>

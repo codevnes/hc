@@ -41,7 +41,7 @@ const DateRangeStockChart: React.FC<DateRangeStockChartProps> = ({
   // Predefined time ranges
   const handleTimeRangeChange = (range: '1m' | '6m' | '1y' | '5y') => {
     const now = new Date();
-    let newStartDate = new Date();
+    const newStartDate = new Date();
 
     switch (range) {
       case '1m':

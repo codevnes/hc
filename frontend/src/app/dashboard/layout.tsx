@@ -9,7 +9,6 @@ import {
   FaUser,
   FaList,
   FaSignOutAlt,
-  FaPlus,
   FaChartLine,
   FaDatabase,
   FaChartBar,
@@ -17,7 +16,6 @@ import {
   FaPercentage,
   FaMoneyBill,
   FaBars,
-  FaTimes,
   FaCode,
   FaImages
 } from 'react-icons/fa';
